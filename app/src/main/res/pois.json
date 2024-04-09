@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Eiffel Tower",
+    "description": " The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower.",
+    "latitude": "48.8584",
+    "longitude": "2.2945",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Eiffel_Tower_Paris_March_2008.jpg/220px-Eiffel_Tower_Paris_March_2008.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Arc de Triomphe",
+    "description": " Description of Arc de Triomphe",
+    "latitude": "48.8738",
+    "longitude": "2.2950",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Arc_de_Triomphe%2C_Paris_2007.jpg/220px-Arc_de_Triomphe%2C_Paris_2007.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Louvre Museum",
+    "description": " Description of Louvre Museum",
+    "latitude": "48.8606",
+    "longitude": "2.3376",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Louvre_Pyramid.jpg/220px-Louvre_Pyramid.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Notre-Dame de Paris",
+    "description": " Description of Notre-Dame de Paris",
+    "latitude": "48.8530",
+    "longitude": "2.3498",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Notre_Dame_de_Paris_2013-07-24.jpg/220px-Notre_Dame_de_Paris_2013-07-24.jpg"
+  }
+]
