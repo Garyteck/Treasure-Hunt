@@ -12,7 +12,7 @@ import com.example.treasurehunt.Result
 import com.example.treasurehunt.data.model.PoiItem
 
 @Composable
-fun ComposeScreen(mapViewModel: MapViewModel) {
+fun MapScreen(mapViewModel: MapViewModel) {
 
     val pois = mapViewModel.pois.collectAsState()
 

@@ -80,7 +80,10 @@ dependencies {
     implementation ("com.google.maps.android:maps-compose:4.3.3")
     // Maps SDK for Android
     implementation ("com.google.android.gms:play-services-maps:18.2.0")
+    implementation ("com.google.android.gms:play-services-location:21.2.0")
 
+    // accompanist- permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
     implementation ("androidx.activity:activity-ktx:1.8.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

@@ -1,5 +1,6 @@
 package com.example.treasurehunt.data
 
+import com.example.treasurehunt.LocationUtils
 import com.example.treasurehunt.data.database.PoiDao
 import com.example.treasurehunt.data.model.PoiItem
 import com.example.treasurehunt.data.remote.PoiNetWorkInterface
@@ -13,10 +14,14 @@ interface PoiRepositoryInterface {
     suspend fun getAllPois(): Flow<List<PoiItem>>
     suspend fun getPoiById(id: Int): Flow<PoiItem>
     suspend fun updatePois(vararg poi: PoiItem)
+    suspend fun getClosestUnselectedPoi(lat: Double, lon: Double): Flow<PoiItem?>
+
 }
 
-class PoiRepository @Inject constructor(private val poiDao: PoiDao, private val poiNetwork:
-        PoiNetWorkInterface) :
+class PoiRepository @Inject constructor(
+    private val poiDao: PoiDao, private val poiNetwork:
+    PoiNetWorkInterface
+) :
     PoiRepositoryInterface {
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getAllPois(): Flow<List<PoiItem>> {
@@ -47,6 +52,21 @@ class PoiRepository @Inject constructor(private val poiDao: PoiDao, private val 
         poiDao.updatePoi(*poi.map { it.toPoiEntity() }.toTypedArray())
     }
 
+    override suspend fun getClosestUnselectedPoi(lat: Double, lon: Double): Flow<PoiItem?> {
+        return poiDao.getNonSelectedPois().map { pois ->
+            pois
+                .minByOrNull {
+                    LocationUtils.calculateDistance(
+                        lat,
+                        lon,
+                        it.latitude,
+                        it.longitude
+                    )
+                }
+                ?.toPoiItem()
+
+        }
+    }
 
 }
 

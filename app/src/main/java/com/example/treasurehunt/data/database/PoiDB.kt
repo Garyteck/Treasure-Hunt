@@ -46,10 +46,13 @@ abstract class PoiDao{
     @Update
     abstract suspend fun updatePoi(vararg poi: PoiEntity)
 
-    @Query("SELECT * FROM poientity WHERE isSelected = TRUE")
+    @Query("SELECT * FROM poientity WHERE isSelected = 1")
     abstract fun getSelectedPois(): Flow<List<PoiEntity>>
-    @Query("SELECT * FROM poientity WHERE isSelected = FALSE")
+    @Query("SELECT * FROM poientity WHERE isSelected = 0")
     abstract fun getNonSelectedPois(): Flow<List<PoiEntity>>
+
+    @Query("SELECT * FROM poientity WHERE isSelected = 0")
+    abstract fun getNonSelectedPoisValue(): List<PoiEntity>
 
 }
 

@@ -10,9 +10,10 @@ interface PoiNetWorkInterface {
 class PoiNetwork : PoiNetWorkInterface {
     override suspend fun getAllPois(): Flow<List<PoiDTO>> = flow {
         emit(listOf(
-            PoiDTO(1, "Poi 1", "Description 1", 33.565, 44.434, "https://www.example.com/image.jpg", false),
-            PoiDTO(2, "Poi 2", "Description 2", 32.565, 46.434, "https://www.example.com/image" +
-                    ".jpg", false),
+            PoiDTO(1, "Poi 1", "MAd of KAffe", 55.686817, 12.532038, "https://www.example" +
+                    ".com/image.jpg", false),
+            PoiDTO(2, "Poi 2", "Bornehuset Stjernen", 55.689773, 12.534312, "https://www.example" +
+                    ".com/image.jpg", false),
         )) // TODO replace with actual network call
     }
 }
