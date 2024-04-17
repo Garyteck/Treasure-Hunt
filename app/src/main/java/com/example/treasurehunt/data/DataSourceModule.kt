@@ -8,14 +8,16 @@ import com.example.treasurehunt.data.remote.PoiNetwork
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object DataSourceModule {
 
     @Provides
+    @Singleton
     fun providePoiDatabase(@ApplicationContext context: Context): PoiDB {
         return Room.databaseBuilder(
             context,
@@ -25,9 +27,11 @@ object DataSourceModule {
     }
 
     @Provides
+    @Singleton
     fun providePoiDao(poiDB: PoiDB) = poiDB.poiDao()
 
     @Provides
+    @Singleton
     fun provideNetworkInterface(): PoiNetWorkInterface {
         return PoiNetwork()
     }

@@ -3,13 +3,15 @@ package com.example.treasurehunt.domain
 import android.util.Log
 import com.example.treasurehunt.Result
 import com.example.treasurehunt.data.PoiRepositoryInterface
+import com.example.treasurehunt.data.model.PoiItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetAllPoisUseCase @Inject constructor(val poirepository: PoiRepositoryInterface) {
-    suspend operator fun invoke() = flow {
+    suspend operator fun invoke() : Flow<Result<List<PoiItem>>> = flow {
         emit(Result.Loading())
         try {
             emitAll(poirepository.getAllPois().map { Result.Success(it) })

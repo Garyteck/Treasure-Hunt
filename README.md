@@ -81,9 +81,9 @@ When the user has selected all the POIs, the app will show a congratulations scr
   - CompassViewModel(getClosestUnselectedPoiUseCase, flowUserLocationUseCase)
     - closestPoiDirection : Flow<Result<Direction>>
     - closestPoiDistance : Flow<Result<Float>>
-  - TakePictureViewModel(selectPoiUseCase)
+  - TakePictureViewModel(getClosestUnselectedPoiUseCase, selectPoiUseCase)
     - isButtonEnable : Flow<Result<Boolean>> // true if the closest POI is < 5 meters
-    - onClick : () -> Unit
+    - onClick : (id : poiId) -> Unit
   - CongratulationsViewModel(getPoisUseCase, unselectPoisUseCase)
     - isAllPoiSelected : Flow<Result<Boolean>>
     -

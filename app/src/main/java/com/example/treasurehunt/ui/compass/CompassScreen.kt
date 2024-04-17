@@ -9,12 +9,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.treasurehunt.Result
+import com.example.treasurehunt.data.model.PoiItem
+import com.example.treasurehunt.ui.poiselector.PoiSelector
+import com.example.treasurehunt.ui.poiselector.TakePictureViewModel
 
 @Composable
-fun CompassScreen(compassViewModel: CompassViewModel) {
+fun CompassScreen(compassViewModel: CompassViewModel, takePictureViewModel: TakePictureViewModel) {
 
     val direction = compassViewModel.direction.collectAsState()
     val distance = compassViewModel.distance.collectAsState()
+    val closestPoi = compassViewModel.closestPoiItem.collectAsState()
+    val isButtonEnabled = takePictureViewModel.isButtonEnabled.collectAsState()
+    val selectPoi = { it : PoiItem -> takePictureViewModel.selectPoi(it) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -27,7 +33,13 @@ fun CompassScreen(compassViewModel: CompassViewModel) {
         } else if (direction.value is Result.Error<*> && distance.value is Result.Error<*>) {
             Text(text = "Error cannot load direction nor distance")
         } else {
+            Text(text = "closestPoint: ${when(closestPoi.value) {
+                is Result.Success -> (closestPoi.value as Result.Success).data?.name + ((closestPoi.value as Result.Success).data?.description)
+                is Result.Error -> "Error"
+                is Result.Loading -> "LOADING..."
+            }}")
             Compass(direction, distance)
+            PoiSelector(isButtonEnabled, closestPoi, selectPoi)
         }
 
     }

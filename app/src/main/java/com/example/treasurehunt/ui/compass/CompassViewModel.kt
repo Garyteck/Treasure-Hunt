@@ -3,6 +3,8 @@ package com.example.treasurehunt.ui.compass
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.treasurehunt.Result
+import com.example.treasurehunt.data.model.PoiItem
+import com.example.treasurehunt.domain.GetClosestUnselectedPoiUseCase
 import com.example.treasurehunt.domain.GetDirectionToClosestUnselectedPoi
 import com.example.treasurehunt.domain.GetDistanceToClosestUnselectedPoi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CompassViewModel @Inject constructor(
+    private val getClosestUnselectedPoiUseCase: GetClosestUnselectedPoiUseCase,
     private val getDistanceToClosestUnselectedPoi: GetDistanceToClosestUnselectedPoi,
     private val getDirectionToClosestUnselectedPoi: GetDirectionToClosestUnselectedPoi
 ) : ViewModel() {
@@ -27,7 +30,23 @@ class CompassViewModel @Inject constructor(
     private val _distance = MutableStateFlow<Result<Double?>>(Result.Loading())
     val distance: StateFlow<Result<Double?>> = _distance
 
+    private val _closestPoiItem = MutableStateFlow<Result<PoiItem?>>(Result.Loading())
+    val closestPoiItem: StateFlow<Result<PoiItem?>> = _closestPoiItem
     init {
+
+        viewModelScope.launch(context = Dispatchers.IO) {
+
+            getClosestUnselectedPoiUseCase()
+                .shareIn(viewModelScope + Dispatchers.IO, started = SharingStarted.Eagerly)
+                .collect {
+
+                    _closestPoiItem.value = when(it) {
+                        is Result.Success -> Result.Success(it.data)
+                        is Result.Error -> Result.Error(it.message)
+                        is Result.Loading -> Result.Loading()
+                    }
+                }
+        }
 
         viewModelScope.launch(context = Dispatchers.IO) {
 
@@ -58,7 +77,5 @@ class CompassViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
+
 }

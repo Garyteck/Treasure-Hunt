@@ -34,4 +34,18 @@ object UseCaseModule {
             locationFlow, screenOrientationFlow, poiRepositoryInterface
         )
     }
+
+    @Provides
+    fun getClosestUnselectedPoiUseCase(
+        locationFlow: Flow<UserLocation>,
+        poiRepositoryInterface: PoiRepositoryInterface
+    ): GetClosestUnselectedPoiUseCase {
+        return GetClosestUnselectedPoiUseCase(locationFlow, poiRepositoryInterface)
+    }
+
+    @Provides
+    fun getTogglePoiUseCase(
+                            poiRepository: PoiRepositoryInterface) : SelectPoiUseCase {
+        return SelectPoiUseCase(poiRepository)
+    }
 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
+import kotlin.math.abs
 
 class GetDirectionToClosestUnselectedPoi
 @Inject constructor(
@@ -40,12 +41,14 @@ class GetDirectionToClosestUnselectedPoi
             Log.e("GetDirectionToClosestUnselectedPoi", "Orientation: $orientation")*/
             userLocationClosestPoiPair.first
             Result.Success(
-                (LocationUtils.calculateDirection(
-                    userLocationClosestPoiPair.first.latitude,
-                    userLocationClosestPoiPair.first.longitude,
-                    userLocationClosestPoiPair.second.latitude,
-                    userLocationClosestPoiPair.second.longitude
-                ) - orientation).apply {
+                abs(
+                    (LocationUtils.calculateDirection(
+                        userLocationClosestPoiPair.first.latitude,
+                        userLocationClosestPoiPair.first.longitude,
+                        userLocationClosestPoiPair.second.latitude,
+                        userLocationClosestPoiPair.second.longitude
+                    ) - orientation)
+                ).apply {
                     //Log.e("GetDirectionToClosestUnselectedPoi", "Direction: $this")
                 }
 

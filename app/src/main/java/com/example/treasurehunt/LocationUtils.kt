@@ -1,6 +1,11 @@
 package com.example.treasurehunt
 
+import android.util.Log
+
 object LocationUtils {
+
+    /* minimum distance in meters to enable Poi selection*/
+    const val DISTANCE_THRESHOLD: Double = 5.0
 
     private const val EARTH_RADIUS = 6371e3 // meters
 
@@ -20,24 +25,20 @@ object LocationUtils {
         return distance
     }
     fun calculateDirection(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val dLon = Math.toRadians(lon2 - lon1)
 
-        val lat1Rad = Math.toRadians(lat1)
-        val lat2Rad = Math.toRadians(lat2)
-        val dLonRad = Math.toRadians(lon2 - lon1)
+        val y = Math.sin(dLon) * Math.cos(Math.toRadians(lat2))
+        val x = Math.cos(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) - Math.sin(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(dLon)
 
-        val a = Math.sin(dLonRad / 2) * Math.sin(dLonRad / 2) +
-                Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-                Math.sin(Math.PI * dLonRad / 360)
+        val brng = Math.atan2(y, x)
 
-        //val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        val degrees = Math.toDegrees(brng)
+        val adjusted = (degrees + 360.0) % 360.0
 
-        // calculate initial direction in radians
-        val direction = Math.atan2(
-            Math.sin(dLonRad) * Math.cos(lat2Rad),
-            Math.cos(lat1Rad) * Math.sin(lat2Rad) - Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLonRad)
-        )
+        // Adjust for clockwise or counter-clockwise based on your need
+       // return 360.0 - adjusted // Counter-clockwise
 
-        // convert direction to degrees (optional) and normalize to 0-360
-        return Math.toDegrees(direction) + 360.0 % 360.0
+        Log.e("LocationUtils", "Adjusted: $adjusted")
+        return adjusted // Clockwise
     }
 }

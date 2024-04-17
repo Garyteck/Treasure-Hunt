@@ -1,6 +1,5 @@
 package com.example.treasurehunt.domain
 
-import android.util.Log
 import com.example.treasurehunt.LocationUtils
 import com.example.treasurehunt.Result
 import com.example.treasurehunt.data.PoiRepositoryInterface
@@ -23,7 +22,7 @@ class GetDistanceToClosestUnselectedPoi @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend operator fun invoke(): Flow<Result<Double>> = locationFlow
         .flatMapLatest { userLocation ->
-            Log.e("GetDistance", "flatmaplatest location: $userLocation")
+            //Log.e("GetDistance", "flatmaplatest location: $userLocation")
             poiRepositoryInterface.getClosestUnselectedPoi(
                 userLocation.latitude,
                 userLocation.longitude
@@ -38,12 +37,10 @@ class GetDistanceToClosestUnselectedPoi @Inject constructor(
                             poi.longitude
                         )
                     ) as Result<Double>
-                }.also {
-                    Log.e("GetDistance", "SendValue: $it")
                 }
 
         }.onEach {
-            Log.e("GetDistance", "OnEach: $it")
+            //    Log.e("GetDistance", "OnEach: $it")
         }
         .catch { emit(Result.Error("fail to calculate distance to closest unselected poi")) }
         .onStart { emit(Result.Loading()) }

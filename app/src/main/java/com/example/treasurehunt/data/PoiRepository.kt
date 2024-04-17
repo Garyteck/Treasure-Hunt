@@ -48,7 +48,7 @@ class PoiRepository @Inject constructor(
         return poiDao.getById(id).map { it.toPoiItem() }
     }
 
-    override suspend fun updatePois(vararg poi: PoiItem) {
+    override suspend fun updatePois(vararg poi: PoiItem)  {
         poiDao.updatePoi(*poi.map { it.toPoiEntity() }.toTypedArray())
     }
 
