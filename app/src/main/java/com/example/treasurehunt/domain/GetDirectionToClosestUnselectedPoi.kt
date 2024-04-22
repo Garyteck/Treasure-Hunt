@@ -1,5 +1,6 @@
 package com.example.treasurehunt.domain
 
+import android.util.Log
 import com.example.treasurehunt.LocationUtils
 import com.example.treasurehunt.Result
 import com.example.treasurehunt.data.PoiRepositoryInterface

@@ -1,6 +1,7 @@
 package com.example.treasurehunt
 
-import android.util.Log
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 
 object LocationUtils {
 
@@ -24,21 +25,28 @@ object LocationUtils {
         val distance = EARTH_RADIUS * c
         return distance
     }
-    fun calculateDirection(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val dLon = Math.toRadians(lon2 - lon1)
 
-        val y = Math.sin(dLon) * Math.cos(Math.toRadians(lat2))
-        val x = Math.cos(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) - Math.sin(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(dLon)
+    fun calculateDirection(latFrom: Double, lonFrom: Double, latTo: Double, lonTo: Double): Double {
+        val dLon = Math.toRadians(lonTo - lonFrom)
+
+        val y = Math.sin(dLon) * Math.cos(Math.toRadians(latTo))
+        val x = Math.cos(Math.toRadians(latFrom)) * Math.sin(Math.toRadians(latTo)) - Math.sin(Math.toRadians(latFrom)) * Math.cos(Math.toRadians(latTo)) * Math.cos(dLon)
 
         val brng = Math.atan2(y, x)
 
         val degrees = Math.toDegrees(brng)
-        val adjusted = (degrees + 360.0) % 360.0
+        var adjusted = (degrees + 360.0) % 360.0
 
-        // Adjust for clockwise or counter-clockwise based on your need
-       // return 360.0 - adjusted // Counter-clockwise
 
-        Log.e("LocationUtils", "Adjusted: $adjusted")
-        return adjusted // Clockwise
+        val targetLatLng = SphericalUtil.computeOffset(LatLng(latFrom, lonFrom), 1.0, adjusted)
+        if(calculateDistance(targetLatLng.latitude, targetLatLng.longitude, latTo, lonTo) > calculateDistance(latFrom, lonFrom, latTo, lonTo)) {
+            adjusted += 180.0
+        }
+        return adjusted % 360  // Clockwise
+
+
     }
+
+
+
 }

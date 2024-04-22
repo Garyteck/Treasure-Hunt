@@ -78,6 +78,7 @@ dependencies {
     //kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
     //map
     implementation ("com.google.maps.android:maps-compose:4.3.3")
+    implementation ("com.google.maps.android:android-maps-utils:0.6.2")
     // Maps SDK for Android
     implementation ("com.google.android.gms:play-services-maps:18.2.0")
     implementation ("com.google.android.gms:play-services-location:21.2.0")
@@ -92,6 +93,8 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.ui:ui-geometry-android:1.6.5")
+    implementation("androidx.compose.ui:ui-geometry:1.6.5")
     implementation("androidx.compose.material3:material3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
