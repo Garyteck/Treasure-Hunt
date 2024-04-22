@@ -14,9 +14,11 @@ class PoiNetwork : PoiNetWorkInterface {
                     ".com/image.jpg", false),
             PoiDTO(2, "Poi 2", "Bornehuset Stjernen", 55.689773, 12.534312, "https://www.example" +
                     ".com/image.jpg", false),
-            PoiDTO(3, "Home", "KrpSV14", 55.688234, 12.533233, "https://www" +
-                    ".example" +
-                    ".com/image.jpg", false),
+            PoiDTO(3, "Sputnikkollegiet", "Botilbud på Frederiksberg", 55.6883755, 12.5320072, "https://www" + ".example" + ".com/image.jpg", false),
+            PoiDTO(4, "PureGym", "Sportkluc", 55.6901329, 12.5324712, "https://www" + "" + "" +
+                    ".example" + ".com/image.jpg", false),
+            PoiDTO(5, "Let's Play", "Cyberkaffe", 55.6894304, 12.5296443, "https://www" + "" + "" +
+                    ".example" + ".com/image.jpg", false),
         )) // TODO replace with actual network call
     }
 }
