@@ -1,4 +1,4 @@
-package com.example.treasurehunt.ui.poiselector
+package com.example.treasurehunt.ui.poi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,12 +42,14 @@ class TakePictureViewModel @Inject constructor(
         }
 
     }
-
-    fun selectPoi(poi : PoiItem) : Unit =
+    fun selectPoi(poi: Result<PoiItem?>) : Unit =
         takeIf { _isButtonEnabled.value }
+            .takeIf { poi is Result.Success }
+            .let { poi as Result.Success }
+            .let { it.data as PoiItem }
             .let {
                 viewModelScope.launch(Dispatchers.IO) {
-                    selectPoiUseCase(poi).collect {
+                    selectPoiUseCase(it).collect {
                         when (it) {
                             is Result.Success -> {
                                 _isPoiFound.value = false
@@ -60,5 +62,4 @@ class TakePictureViewModel @Inject constructor(
                     }
                 }
             }
-
 }

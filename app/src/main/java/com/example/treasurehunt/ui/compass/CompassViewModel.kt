@@ -32,6 +32,8 @@ class CompassViewModel @Inject constructor(
 
     private val _closestPoiItem = MutableStateFlow<Result<PoiItem?>>(Result.Loading())
     val closestPoiItem: StateFlow<Result<PoiItem?>> = _closestPoiItem
+
+
     init {
 
         viewModelScope.launch(context = Dispatchers.IO) {

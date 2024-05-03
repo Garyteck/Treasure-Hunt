@@ -38,7 +38,7 @@ object LocationUtils {
         // Adjust for clockwise or counter-clockwise based on your need
        // return 360.0 - adjusted // Counter-clockwise
 
-        Log.e("LocationUtils", "Adjusted: $adjusted")
+        //Log.e("LocationUtils", "Adjusted: $adjusted")
         return adjusted // Clockwise
     }
 }

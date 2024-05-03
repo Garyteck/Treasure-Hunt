@@ -1,5 +1,6 @@
 package com.example.treasurehunt.data
 
+import android.util.Log
 import com.example.treasurehunt.LocationUtils
 import com.example.treasurehunt.data.database.PoiDao
 import com.example.treasurehunt.data.model.PoiItem
@@ -16,6 +17,9 @@ interface PoiRepositoryInterface {
     suspend fun updatePois(vararg poi: PoiItem)
     suspend fun getClosestUnselectedPoi(lat: Double, lon: Double): Flow<PoiItem?>
 
+    suspend fun unselectAllPois()
+
+    suspend fun getGameProgress(): Flow<Pair<Int, Int>>
 }
 
 class PoiRepository @Inject constructor(
@@ -48,7 +52,7 @@ class PoiRepository @Inject constructor(
         return poiDao.getById(id).map { it.toPoiItem() }
     }
 
-    override suspend fun updatePois(vararg poi: PoiItem)  {
+    override suspend fun updatePois(vararg poi: PoiItem) {
         poiDao.updatePoi(*poi.map { it.toPoiEntity() }.toTypedArray())
     }
 
@@ -67,6 +71,19 @@ class PoiRepository @Inject constructor(
 
         }
     }
+
+    override suspend fun unselectAllPois() {
+        poiDao.unselectAllPois()
+    }
+
+    override suspend fun getGameProgress(): Flow<Pair<Int, Int>> = poiDao.getAllPois()
+        .map {
+            val total = it.size
+            val found = it.count { it.isSelected }
+            Pair(found, total).also {
+                Log.e("PoiRepository", "Game progress: $it")
+            }
+        }
 
 }
 

@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.treasurehunt.Result
 import com.example.treasurehunt.domain.GetAllPoisUseCase
+import com.example.treasurehunt.domain.GetGameProgressUseCase
+import com.example.treasurehunt.domain.UnselectAllPoisUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,12 +16,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CongratulationsViewModel @Inject constructor(
-    getAllPoisUseCase:
-    GetAllPoisUseCase
+    val getAllPoisUseCase: GetAllPoisUseCase,
+    val unselectAllPoisUseCase : UnselectAllPoisUseCase,
+    val getGameProgressUseCase: GetGameProgressUseCase
 ) : ViewModel() {
 
     private val _isAllPoiSelected = MutableStateFlow(false)
     val isAllPoiSelected = _isAllPoiSelected.asStateFlow()
+
+    private val _gameProgress = MutableStateFlow(Pair(1, 10))
+    val gameProgress = _gameProgress.asStateFlow()
 
     init {
         Log.e("CongratulationsViewModel", "init: ")
@@ -32,11 +38,26 @@ class CongratulationsViewModel @Inject constructor(
                     is Result.Success -> it.data.all { poiItem -> poiItem.isFound }
                 }
             }
+
+        }
+
+        viewModelScope.launch(context = Dispatchers.IO) {
+            getGameProgressUseCase().collect {
+                Log.e("CongratulationsViewModel", "getGameProgressUseCase: $it")
+                _gameProgress.value = when (it) {
+                    is Result.Error -> Pair(1, 10)
+                    is Result.Loading -> Pair(1, 10)
+                    is Result.Success -> it.data
+                }
+            }
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.e("CongratulationsViewModel", "onCleared: ")
+    fun restartGame() {
+        viewModelScope.launch(context = Dispatchers.IO) {
+            unselectAllPoisUseCase().collect {
+                Log.e("CongratulationsViewModel", "unselectAllPoisUseCase: $it")
+            }
+        }
     }
 }

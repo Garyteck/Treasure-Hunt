@@ -54,6 +54,8 @@ abstract class PoiDao{
     @Query("SELECT * FROM poientity WHERE isSelected = 0")
     abstract fun getNonSelectedPoisValue(): List<PoiEntity>
 
+    @Query("UPDATE poientity SET isSelected = 0")
+    abstract fun unselectAllPois()
 }
 
 

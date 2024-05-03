@@ -10,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.treasurehunt.Result
 import com.example.treasurehunt.data.model.PoiItem
-import com.example.treasurehunt.ui.poiselector.PoiSelector
-import com.example.treasurehunt.ui.poiselector.TakePictureViewModel
+import com.example.treasurehunt.ui.poi.PoiSelector
+import com.example.treasurehunt.ui.poi.TakePictureViewModel
 
 @Composable
 fun CompassScreen(compassViewModel: CompassViewModel, takePictureViewModel: TakePictureViewModel) {
@@ -20,7 +20,7 @@ fun CompassScreen(compassViewModel: CompassViewModel, takePictureViewModel: Take
     val distance = compassViewModel.distance.collectAsState()
     val closestPoi = compassViewModel.closestPoiItem.collectAsState()
     val isButtonEnabled = takePictureViewModel.isButtonEnabled.collectAsState()
-    val selectPoi = { it : PoiItem -> takePictureViewModel.selectPoi(it) }
+    val selectPoi = { it : Result<PoiItem?> -> takePictureViewModel.selectPoi(it) }
 
     Column(
         modifier = Modifier.fillMaxSize(),

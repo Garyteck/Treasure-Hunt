@@ -1,4 +1,4 @@
-# Treasure Hunt app
+# Treasure Hunt Game
 
 This app will be a simple treasure hunt game.  
 The user will be able to see a map of POIs (Points of Interest = the treasures ) and the app will guide the user to the closest POI.  
