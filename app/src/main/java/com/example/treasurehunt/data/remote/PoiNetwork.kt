@@ -1,33 +1,73 @@
 package com.example.treasurehunt.data.remote
 
+import com.example.treasurehunt.BuildConfig
 import com.example.treasurehunt.data.database.PoiEntity
+import com.example.treasurehunt.data.model.UserLocation
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.http.URLProtocol
+import io.ktor.http.path
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.Serializable
 
 interface PoiNetWorkInterface {
     suspend fun getAllPois(): Flow<List<PoiDTO>>
 }
-class PoiNetwork : PoiNetWorkInterface {
+
+class PoiNetwork(private val userLocation: Flow<UserLocation>, private val httpClient: HttpClient) :
+    PoiNetWorkInterface {
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getAllPois(): Flow<List<PoiDTO>> = flow {
-        emit(listOf(
-            PoiDTO(1, "Poi 1", "MAd of KAffe", 55.686817, 12.532038, "https://picsum.photos/200", false),
-            PoiDTO(2, "Poi 2", "Bornehuset Stjernen", 55.689773, 12.534312, "https://picsum.photos/200", false),
-            PoiDTO(3, "Sputnikkollegiet", "Botilbud på Frederiksberg", 55.6883755, 12.5320072, "https://picsum.photos/200", false),
-            PoiDTO(4, "PureGym", "Sportkluc", 55.6901329, 12.5324712, "https://picsum.photos/200", false),
-            PoiDTO(5, "Let's Play", "Cyberkaffe", 55.6894304, 12.5296443, "https://picsum.photos/200", false),
-        )) // TODO replace with actual network call
+
+        userLocation.collect { userLocation ->
+            emit(httpClient.get {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = "maps.googleapis.com"
+                    path("maps", "api", "place", "nearbysearch", "json")
+                    parameter("location", "${userLocation.latitude},${userLocation.longitude}")
+                    parameter("radius", "100")
+                    parameter("type", "point_of_interest")
+                    parameter("key", BuildConfig.MAPS_API_KEY)
+                }
+            }.body<PoiResponse>().results)
+
+        }
     }
 }
 
 
+@Serializable
+data class PoiResponse(val results: List<PoiDTO>)
+@Serializable
+data class Geometry(
+    val location: PoiLocation
+)
+@Serializable
+data class PoiLocation(
+    val lat: Double,
+    val lng: Double
+)
+
+@Serializable
 data class PoiDTO(
-    val id: Int,
+    val business_status: String,
+    val geometry: Geometry,
+    val place_id: String,
     val name: String,
-    val description: String,
-    val latitude: Double,
-    val longitude: Double,
-    val image: String,
-    val isFound: Boolean = false
+    val vicinity: String,
 ) {
-    fun toPoiEntity() = PoiEntity(id, name, description, latitude, longitude, image, false)
+    fun toPoiEntity() = PoiEntity(
+        0,
+        name,
+        vicinity,
+        geometry.location.lat,
+        geometry.location.lng,
+        "",
+        false
+    )
 }

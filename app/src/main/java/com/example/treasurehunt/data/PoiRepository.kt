@@ -8,6 +8,7 @@ import com.example.treasurehunt.data.remote.PoiNetWorkInterface
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -38,10 +39,10 @@ class PoiRepository @Inject constructor(
                             dtos.map { it.toPoiEntity() }
                         }.flatMapConcat { entities ->
                             poiDao.insertPois(*entities.toTypedArray())
-                            poiDao.getAllPois()
+                            flowOf(pois)
                         }
                 } else {
-                    poiDao.getAllPois()
+                    flowOf(pois)
                 }
             }.map { entities ->
                 entities.map { it.toPoiItem() }

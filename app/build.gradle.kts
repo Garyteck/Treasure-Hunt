@@ -5,7 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("androidx.room")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -74,6 +74,14 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+    // ktor
+    implementation("io.ktor:ktor-client-core:2.3.11")
+    implementation("io.ktor:ktor-client-android:2.3.11")
+    implementation("io.ktor:ktor-client-serialization:2.3.11")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.11")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.11")
+    implementation("io.ktor:ktor-client-logging:2.3.11")
 
     //kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
     //map

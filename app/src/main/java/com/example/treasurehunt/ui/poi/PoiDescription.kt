@@ -27,8 +27,11 @@ fun PoiDescription(poi: Result<PoiItem?>, modifier: Modifier = Modifier) {
             Text(text = "Loading")
         }
 
-        is Result.Success -> {
-            val poiItem = poi.data!!
+        is Result.Success  -> {
+            if (poi.data == null) {
+                return
+            }
+            val poiItem = poi.data
 
             val baseUrl = "https://maps.googleapis.com/maps/api/streetview?"
             val params = listOf(

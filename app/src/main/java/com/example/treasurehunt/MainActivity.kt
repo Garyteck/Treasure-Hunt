@@ -100,6 +100,8 @@ class MainActivity : ComponentActivity() {
                                         topBar = {
                                             LinearProgressIndicator(
                                                 progress = {
+                                                    if (gameProgress.second == 0) 0f
+                                                    else
                                                     (gameProgress.first.toFloat() / gameProgress.second.toFloat())
                                                 }, modifier = Modifier
                                                     .height(24.dp)

@@ -40,8 +40,8 @@ fun MapScreen(mapViewModel: MapViewModel) {
 
         when (closestPoi.value) {
             is Result.Success<*> -> {
-                (closestPoi.value as? Result.Success<PoiItem?>)?.let {
-                    ComposeClosestPoiMap(poi = it.data!!, userLocation = location.value)
+                (closestPoi.value as? Result.Success<PoiItem?>)?.data?.let {
+                    ComposeClosestPoiMap(poi = it, userLocation = location.value)
                 }
             }
 
