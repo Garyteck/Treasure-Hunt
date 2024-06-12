@@ -45,7 +45,7 @@ When the user has selected all the POIs, the app will show a congratulations scr
 
 #### Network 
 
-// TODO : create an API to fetch the POIs from the network
+Use Google Maps APIs to load the Pois from the network
 
 #### DTOs 
   - PoiDTO
@@ -111,7 +111,7 @@ When the user has selected all the POIs, the app will show a congratulations scr
     - Error<T> : T could not be retrieved, the error message is in the exception
 
 - Direction : a 360° angle that points to the closest POI
-- 
+
 ### Dependency Injection and Unit Test
 
 #### Mocks and Injects
